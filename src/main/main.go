@@ -10,7 +10,7 @@ func main() {
 	list := b
 	list = addLast(list, &item{4, nil})
 	list = addFirst(list, &item{55, nil})
-	fmt.Println("value at index ", 4, " -> ", get(list, 4))
-	delete(list, c)
+	fmt.Println(get(list, 2))
+	deleteAtIndex(list, 2)
 	printList(list)
 }

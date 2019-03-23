@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"sync"
 )
 
 type item struct {
@@ -10,8 +11,10 @@ type item struct {
 }
 
 func printList(list *item) {
+	i := 0
 	for item := list; item != nil; item = item.next {
-		fmt.Println("->", item.value)
+		fmt.Printf("[%v] -> %v\n", i, item.value)
+		i++
 	}
 }
 
@@ -39,12 +42,33 @@ func delete(list, toDelete *item) {
 	for item := list; item != nil; item = item.next {
 		i++
 		if item.next == toDelete {
+			mutex := sync.Mutex{}
+			mutex.Lock()
 			if toDelete.next == nil {
 				item.next = nil
 			} else {
 				item.next = toDelete.next
 			}
+			mutex.Unlock()
 		}
+	}
+	return
+}
+
+func deleteAtIndex(list *item, index int) {
+	prev, i := list, 0
+	for list.next != nil {
+		if i == index {
+			if list.next == nil {
+				prev.next = nil
+			} else {
+				prev.next = list.next
+			}
+			return
+		}
+		prev = list
+		list = list.next
+		i++
 	}
 	return
 }
@@ -52,11 +76,10 @@ func delete(list, toDelete *item) {
 func get(list *item, index int) int64 {
 	i := 0
 	for item := list; item != nil; item = item.next {
-		i++
 		if i == index {
 			return item.value
 		}
-
+		i++
 	}
 	return -1
 }
