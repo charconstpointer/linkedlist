@@ -34,6 +34,21 @@ func addFirst(list, item *item) *item {
 	return item
 }
 
+func delete(list, toDelete *item) {
+	i := 0
+	for item := list; item != nil; item = item.next {
+		i++
+		if item.next == toDelete {
+			if toDelete.next == nil {
+				item.next = nil
+			} else {
+				item.next = toDelete.next
+			}
+		}
+	}
+	return
+}
+
 func get(list *item, index int) int64 {
 	i := 0
 	for item := list; item != nil; item = item.next {
