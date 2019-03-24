@@ -11,8 +11,12 @@ type list struct {
 }
 
 type item struct {
-	value int64
+	value string
 	next  *item
+}
+
+func LinkedList() list {
+	return list{nil}
 }
 
 func printList(list *list) {
