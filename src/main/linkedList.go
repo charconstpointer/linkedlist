@@ -51,6 +51,9 @@ func (l *list) addFirst(item *item) {
 func (l *list) addAtIndex(itemToAdd *item, index int) {
 	prev, i := l.start, 0
 	for item := l.start; item != nil; item = item.next {
+		if item.next == nil && i != index {
+			return
+		}
 		if i == index {
 			prev.next = itemToAdd
 			itemToAdd.next = item
