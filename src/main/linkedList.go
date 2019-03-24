@@ -7,6 +7,7 @@ import (
 
 type list struct {
 	start *item
+	//end   *item TBI
 }
 
 type item struct {
@@ -25,6 +26,7 @@ func printList(list *list) {
 func (l *list) addLast(item *item) {
 	if l.start == nil {
 		l.start = item
+
 		return
 	}
 
@@ -46,9 +48,21 @@ func (l *list) addFirst(item *item) {
 
 }
 
-func delete(list, toDelete *item) {
+func (l *list) addAtIndex(itemToAdd *item, index int) {
+	prev, i := l.start, 0
+	for item := l.start; item != nil; item = item.next {
+		if i == index {
+			prev.next = itemToAdd
+			itemToAdd.next = item
+		}
+		prev = item
+		i++
+	}
+}
+
+func (l *list) delete(toDelete *item) {
 	i := 0
-	for item := list; item != nil; item = item.next {
+	for item := l.start; item != nil; item = item.next {
 		i++
 		if item.next == toDelete {
 			mutex := sync.Mutex{}
@@ -64,31 +78,24 @@ func delete(list, toDelete *item) {
 	return
 }
 
-func deleteAtIndex(list *item, index int) {
-	prev, i := list, 0
-	for list.next != nil {
+func (l *list) deleteAtIndex(index int) {
+	prev, i := l.start, 0
+	for item := l.start; item != nil; item = item.next {
 		if i == index {
-			if list.next == nil {
-				prev.next = nil
-			} else {
-				prev.next = list.next
-			}
-			return
+			prev.next = item.next
 		}
-		prev = list
-		list = list.next
+		prev = item
 		i++
 	}
-	return
 }
 
-func get(list *item, index int) int64 {
+func (l *list) get(index int) *item {
 	i := 0
-	for item := list; item != nil; item = item.next {
+	for item := l.start; item != nil; item = item.next {
 		if i == index {
-			return item.value
+			return item
 		}
 		i++
 	}
-	return -1
+	return nil
 }
