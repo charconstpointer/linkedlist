@@ -8,6 +8,7 @@ import (
 type list struct {
 	start *item
 	//end   *item TBI
+	//??
 }
 
 type item struct {
